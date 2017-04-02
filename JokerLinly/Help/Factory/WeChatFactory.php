@@ -31,4 +31,34 @@ class WeChatFactory
     {
         return WeChatRely::where('state', $state)->first();
     }
+
+    /**
+     * getFullMatch
+     * @author JokerLinly 2017-04-02
+     * @param  [string] $content [description]
+     * @return [object]          [description]
+     */
+    public static function getFullMatch($content)
+    {
+        return WeChatRely->where('state',2)->where('question',$content)->first();
+    }
+
+    /**
+     * getHalfMatch
+     * @author JokerLinly 2017-04-02
+     * @param  [string] $content [description]
+     * @return [boolean or object]          [description]
+     */
+    public static function getHalfMatch($content)
+    {
+        $half_match = RelyModel()->where('state',3)->get();
+        if ($half_match) {
+            foreach ($half_match as $value) {
+                if (strstr($content,$value->question)) {
+                    return $value;
+                }
+            }
+        }
+        return null;
+    }
 }

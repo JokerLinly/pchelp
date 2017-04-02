@@ -43,48 +43,52 @@ class WeChatSystem
      * answerContent
      * @author JokerLinly 2017-04-02
      * @param  [int] $style  [style]
-     * @param  [string] $answer [answer]
+     * @param  [string] $mediaId [mediaId]
      * @return [json]         [description]
      */
-    public static function answerContent($style, $answer)
+    public static function answerContent($style, $mediaId)
     {
-        # code...
+        if ($style == 2) {
+            return new EasyWeChat\Message\Image(['media_id' => $mediaId]);
+        } elseif ($style == 0) {
+            return new EasyWeChat\Message\Text(['content' => $mediaId]);
+        } elseif ($style == 1) {
+            return new EasyWeChat\Message\Material('mpnews', $mediaId);
+        } elseif ($style == 3) {
+            return new EasyWeChat\Message\Material('voice', $mediaId);
+        }
     }
 
-    // /**
-    //  * 微信消息回复
-    //  * @author JokerLinly 2017-04-02
-    //  * @param  [string] $content [description]
-    //  * @return [type]          [description]
-    //  */
-    // public static function text($content)
-    // {
-    //     $AlltextRely = RelyModule::getRely(1);//获取用户发送消息时自动回复的内容
-    //     if (is_array($AlltextRely) && !empty($AlltextRely)) {
-    //         if ($AlltextRely['style'] == 2) {
-    //             $img = new Image(['media_id' => $AlltextRely['answer']]);
-    //             return $img;
-    //         }
-    //         return $AlltextRely['answer'];
-    //     } elseif ($content=='骏哥哥好帅') {
-    //         $news = new News([
-    //             'title'       => 'PC仔信息登记',
-    //             'description' => 'PC仔申请通道',
-    //             'url'         => action('WechatController@pcer'),
-    //             'image'       => 'https://mmbiz.qlogo.cn/mmbiz/OEpqnOUyYjMcqqpJBRh2bhFDWTXUL3fdT54e7HTLTzEyEfzXk8XTUJQsrFx5pHvC7v6eSDNLicse62Hvpwt4o0A/0',
-    //         ]);
-    //         return $news;
-    //     } else {
-    //         //获取精确搜索内容
-    //         $full_match = RelyModule::getFullMatch($content);
-    //         if (empty($full_match) && !is_array($full_match)) {
-    //             //获取模糊匹配内容
-    //             $half_match = RelyModule::getHalfMatch($content);
-    //             if (!empty($half_match) && is_array($half_match)) {
-    //                 return $half_match['answer'];
-    //             }
-    //         }
-    //         return $full_match['answer'];
-    //     }
-    // }
+    /**
+     * 微信消息回复
+     * @author JokerLinly 2017-04-02
+     * @param  [string] $content [description]
+     * @return [type]          [description]
+     */
+    public static function text($content)
+    {
+        $AlltextRely = WeChatFactory::getRelyByState(1);//获取用户发送消息时自动回复的内容
+        if ($AlltextRely) {
+            return $this->answerContent($AlltextRely->style, $AlltextRely->answer);
+        } elseif ($content=='骏哥哥好帅') {
+            $news = new News([
+                'title'       => 'PC仔信息登记',
+                'description' => 'PC仔申请通道',
+                'url'         => action('WechatController@pcer'),
+                'image'       => 'https://mmbiz.qlogo.cn/mmbiz/OEpqnOUyYjMcqqpJBRh2bhFDWTXUL3fdT54e7HTLTzEyEfzXk8XTUJQsrFx5pHvC7v6eSDNLicse62Hvpwt4o0A/0',
+            ]);
+            return $news;
+        } else {
+            //获取精确搜索内容
+            $full_match = WeChatFactory::getFullMatch($content);
+            if (empty($full_match)) {
+                //获取模糊匹配内容
+                $half_match = WeChatFactory::getHalfMatch($content);
+                if (!empty($half_match)) {
+                    return $this->answerContent($half_match->style, $half_match->answer);
+                }
+            }
+            return $this->answerContent($full_match->style, $full_match->answer);
+        }
+    }
 }
