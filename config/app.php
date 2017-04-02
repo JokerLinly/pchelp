@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => 'PChelp',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'PRC',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,7 +176,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        JokerLinly\Help\Providers\SuperSystemServiceProvider::class,
+        JokerLinly\Help\Providers\AdminSystemServiceProvider::class,
+        JokerLinly\Help\Providers\MemberSystemServiceProvider::class,
+        JokerLinly\Help\Providers\UserSystemServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Overtrue\LaravelWechat\ServiceProvider::class,
     ],
 
     /*
@@ -225,7 +230,12 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'SuperSystem' => JokerLinly\Help\Facades\SuperSystem::class,
+        'AdminSystem' => JokerLinly\Help\Facades\AdminSystem::class,
+        'MemberSystem' => JokerLinly\Help\Facades\MemberSystem::class,
+        'UserSystem' => JokerLinly\Help\Facades\UserSystem::class,
+        'Flash' => Laracasts\Flash\Flash::class,
+        'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
     ],
 
 ];
