@@ -19,7 +19,7 @@ class CreatePcersTable extends Migration
             $table->string('name')->comment('队员姓名');
             $table->string('nickname')->comment('对外昵称');
             $table->string('school_id')->comment('学号');
-            $table->integer('school_level')->comment('年级id');
+            $table->integer('pcerlevel_id')->comment('年级id');
             $table->string('long_number')->comment('长号');
             $table->string('number')->nullable()->comment('短号');
             $table->string('department')->comment('学系');

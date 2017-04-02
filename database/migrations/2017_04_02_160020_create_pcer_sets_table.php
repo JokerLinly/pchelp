@@ -15,7 +15,8 @@ class CreatePcerSetsTable extends Migration
     {
         Schema::create('pcer_sets', function (Blueprint $table) {
             $table->increments('id');
-            $table->tinyInteger('style')->default(0)->index()->comment('1是年级名称,2是宿舍楼名称');
+            $table->tinyInteger('style')->default(0)->index()->comment('0是年级名称,1是宿舍楼名称');
+            $table->tinyInteger('state')->default(1)->comment('状态');
             $table->string('name')->comment('名称');
             $table->timestamps();
             $table->softDeletes();
