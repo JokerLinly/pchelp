@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/test', 'TestController@index');
+
+// 接入微信
+Route::any('/wechat', 'WechatController@serve');
+
+// 报修链接
+Route::get('/pchelp/{type_name}', 'Wap\User\TicketController@index');
