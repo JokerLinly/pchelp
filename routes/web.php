@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::get('/test', 'TestController@index');
 
 // 接入微信
-Route::any('/wechat', 'WechatController@serve');
+Route::any('/wechat', 'WeChatController@serve');
 
 // 报修链接
 Route::get('/pchelp/{type_name}', 'Wap\User\TicketController@index');
