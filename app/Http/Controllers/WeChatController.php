@@ -40,15 +40,20 @@ class WeChatController extends Controller
                             break;
                     }
 
-                    // 上门接单按钮是否打开
-                    if (WeChatSystem::isWork($type)) {
+                    // 按钮是否打开
+                    $button_info = WeChatSystem::getButtonInfoByType($type);
+                    if ($button_info->type_state == 1) {
                         $news = new EasyWeChat\Message\News([
-                            'title'       => '预约上门',
-                            'description' => '周一至周五晚 6:00-9:30 可预约 PC 志愿者上门服务',
+                            'title'       => $button_info->type_name? $button_info->type_name : '预约报修',
+                            'description' => $button_info->description? $button_info->description : '预约报修',
                             'url'         => action('TicketController@index', ['type_name'=>$message->EventKey]),
-                            'image'       => 'https://mmbiz.qlogo.cn/mmbiz/OEpqnOUyYjMcqqpJBRh2bhFDWTXUL3fdT54e7HTLTzEyEfzXk8XTUJQsrFx5pHvC7v6eSDNLicse62Hvpwt4o0A/0',
+                            'image'       => $button_info->img_url,
                         ]);
                         return $news;
+                    }
+
+                    if ($button_info->close_message) {
+                        return WeChatSystem::answerContent($button_info->close_tyle, $button_info->close_message);
                     }
                 }
             }

@@ -14,15 +14,12 @@ class WeChatSystem
      * mark sure is work
      * @author JokerLinly 2017-04-02
      * @param  [int]  $state [button]
-     * @return boolean        [description]
+     * @return object        [description]
      */
-    public static function isWork(int $type)
+    public static function getButtonInfoByType(int $type)
     {
         $button_info = WeChatFactory::getButtonInfoByType($type);
-        if ($button_info && $button_info->type_state == 1) {
-            return true;
-        }
-        return false;
+        return $button_info;
     }
 
     /**
