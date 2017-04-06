@@ -29,7 +29,7 @@ class CreateTicketsTable extends Migration
             $table->tinyInteger('date1')->nullable()->index()->comment('代表星期');
             $table->string('hour1')->nullable()->comment('代表上门时间段');
 
-            $table->string('problem')->comment('报修原因');
+            $table->text('problem')->comment('报修原因');
 
             $table->integer('pcer_id')->nullable()->index()->comment('关联 PC 志愿者');
             $table->integer('pcadmin_id')->nullable()->index()->comment('关联 PC 管理员');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Wap\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use UserSystem;
 
 class TicketController extends Controller
 {

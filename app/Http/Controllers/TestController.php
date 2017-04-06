@@ -15,7 +15,7 @@ class TestController extends Controller
      */
     public function index()
     {
-        if (WeChatSystem::isWork(1)) {
+        if (WeChatSystem::getButtonInfoByType(1)) {
             $news = new EasyWeChat\Message\News([
                 'title'       => 'PC仔信息登记',
                 'description' => 'PC仔申请通道',

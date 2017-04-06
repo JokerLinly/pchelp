@@ -20,7 +20,7 @@ class WeChatController extends Controller
             /*判断事件类型*/
             if ($message->MsgType == 'event') {
                 //关注事件
-                if ($message->Event=='subscribe') {
+                if ($message->Event == 'subscribe') {
                     return WeChatSystem::subscribe();
                 }
 
