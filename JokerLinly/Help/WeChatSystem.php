@@ -85,7 +85,7 @@ class WeChatSystem
                     return $this->answerContent($half_match->style, $half_match->answer);
                 }
             }
-            return $this->answerContent($full_match->style, $full_match->answer);
+            return null;
         }
     }
 }

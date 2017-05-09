@@ -40,7 +40,7 @@ class WeChatFactory
      */
     public static function getFullMatch($content)
     {
-        return WeChatRely->where('state',2)->where('question',$content)->first();
+        return WeChatRely::where('state',2)->where('question', $content)->first();
     }
 
     /**
@@ -51,7 +51,7 @@ class WeChatFactory
      */
     public static function getHalfMatch($content)
     {
-        $half_match = RelyModel()->where('state',3)->get();
+        $half_match = WeChatRely::where('state',3)->get();
         if ($half_match) {
             foreach ($half_match as $value) {
                 if (strstr($content,$value->question)) {
