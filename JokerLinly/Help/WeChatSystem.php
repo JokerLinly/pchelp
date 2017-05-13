@@ -88,4 +88,25 @@ class WeChatSystem
             return null;
         }
     }
+
+    /**
+     * 保存微信用户的 Session
+     * @author JokerLinly 2017-05-09
+     * @param  [type] $user [description]
+     * @return [type]       [description]
+     */
+    public static function putWechatSession($user)
+    {
+        $user_info = WeChatFactory::getWechatUser($user);
+        $wechat_user = [
+            'id'              => $user_info->id,
+            'state'           => $user_info->state,
+            'openid'          => $user_info->openid,
+            'image_url'       => $user_info->image_url,
+            'wechat_nickname' => $user_info->wechat_nickname,
+        ];
+        \Session::put('wechat_user', $wechat_user);
+        // 然后存 session
+        return \Session::get('wechat_user');
+    }
 }

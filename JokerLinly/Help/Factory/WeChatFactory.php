@@ -4,6 +4,7 @@ namespace JokerLinly\Help\Factory;
 
 use JokerLinly\Help\Models\SuperButton;
 use JokerLinly\Help\Models\WeChatRely;
+use JokerLinly\Help\Models\WeChatUser;
 
 /**
 * 用户工厂
@@ -60,5 +61,24 @@ class WeChatFactory
             }
         }
         return null;
+    }
+
+    /**
+     * 创建 Or 更新微信用户信息
+     * @author JokerLinly 2017-05-09
+     * @param  [type] $user_data [description]
+     * @return [type]            [description]
+     */
+    public static function getWechatUser($user_data)
+    {
+        $where = ['openid' => $user_data['openid']];
+        $update = [
+            'wechat_nickname' => empty($user_data['nickname']) ? : $user_data['nickname'],
+            'subscribe'       => empty($user_data['subscribe']) ? : $user_data['subscribe'],
+            'image_url'       => empty($user_data['nickname']) ? : $user_data['headimgurl'],
+        ];
+
+        $user_info = WeChatUser::updateOrCreate($where, $update);
+        return $user_info;
     }
 }

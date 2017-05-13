@@ -15,7 +15,11 @@ class TestController extends Controller
      */
     public function index()
     {
-        dd(WeChatSystem::text('dfdsfdsf'));
+        if (!\Session::has('wechat_user')) {
+            $user = EasyWeChat::user()->get('od2TLjpXQWy8OnA5Ij4XPW0h5Iig');
+            WeChatSystem::putWechatSession($user);
+        }
+        dd(\Session::get('wechat_user'));
         if (WeChatSystem::getButtonInfoByType(1)) {
             $news = new EasyWeChat\Message\News([
                 'title'       => 'PC仔信息登记',

@@ -4,10 +4,17 @@ namespace App\Http\Controllers\Wap\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use UserSystem;
+use JokerLinly\Help\UserSystem;
 
 class TicketController extends Controller
 {
+    protected $user;
+
+    public function __construct(UserSystem $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +22,24 @@ class TicketController extends Controller
      */
     public function index($type_name)
     {
-        dd($type_name);
+        if (in_array($type_name, config('pcwechat.event_key'))) {
+            $response_data = $this->user->entryType($type_name);
+            return view('ticket.'.$type_name.'.index', compact('response_data'));
+        }
+        return abort(404);
+    }
+
+    /**
+     * Mytickets Wap center
+     * @author JokerLinly 2017-05-13
+     * @return [type] [description]
+     */
+    public function home()
+    {
+        if (\Session::has('wechat_user')) {
+            return true;
+        }
+        return false;
     }
 
     /**

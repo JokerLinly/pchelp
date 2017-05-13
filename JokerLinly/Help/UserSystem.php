@@ -7,5 +7,8 @@ namespace JokerLinly\Help;
 */
 class UserSystem
 {
-
+    public function entryType($type_name)
+    {
+        return $type_name;
+    }
 }

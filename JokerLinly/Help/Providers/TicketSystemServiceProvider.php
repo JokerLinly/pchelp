@@ -1,10 +1,10 @@
 <?php
 namespace JokerLinly\Help\Providers;
 
-use JokerLinly\Help\UserSystem;
+use JokerLinly\Help\TicketSystem;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 
-class UserSystemServiceProvider extends LaravelServiceProvider
+class TicketSystemServiceProvider extends LaravelServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -23,8 +23,8 @@ class UserSystemServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
-        $this->app->bind(UserSystem::class, function ($app) {
-            return new UserSystem;
+        $this->app->bind('TicketSystem', function ($app) {
+            return new TicketSystem;
         });
     }
 }

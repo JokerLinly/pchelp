@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class WeChatUser extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = ['wechat_nickname', 'openid', 'subscribe', 'image_url'];
 }
