@@ -20,9 +20,12 @@ Route::get('/test', 'TestController@index');
 Route::any('/wechat', 'WeChatController@serve');
 Route::get('/wechat_callback', 'WeChatController@getWechatUserSession');
 
-// 报修链接
-Route::get('/pchelp/{type_name}', 'Wap\User\TicketController@index');
+Route::group(['middleware' => 'wechat_user'], function () {
+    // 报修链接
+    Route::get('/pchelp/{type_name}', 'Wap\User\TicketController@index');
 
-// 我的订单
-Route::get('/myticket', 'Wap\User\TicketController@home');
+    // 我的订单
+    Route::get('/myticket', 'Wap\User\TicketController@home');
+});
+
 

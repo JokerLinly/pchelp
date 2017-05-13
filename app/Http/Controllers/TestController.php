@@ -17,9 +17,11 @@ class TestController extends Controller
     {
         if (!\Session::has('wechat_user')) {
             $user = EasyWeChat::user()->get('od2TLjpXQWy8OnA5Ij4XPW0h5Iig');
-            WeChatSystem::putWechatSession($user);
+            $wechat_user = WeChatSystem::putWechatSession($user);
+            // \Session::put('wechat_user', $wechat_user);
+            // \Session::save();
         }
-        dd(\Session::get('wechat_user'));
+        dd(\Session::all());
         if (WeChatSystem::getButtonInfoByType(1)) {
             $news = new EasyWeChat\Message\News([
                 'title'       => 'PC仔信息登记',

@@ -16,7 +16,6 @@ class WechatLogin
     public function handle($request, Closure $next)
     {
         if (!$request->session()->has('wechat_user')) {
-
             return $request->action('WeChatController@getWechatUserSession');
         }
         return $next($request);

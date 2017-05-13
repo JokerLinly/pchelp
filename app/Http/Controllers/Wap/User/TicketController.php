@@ -36,10 +36,13 @@ class TicketController extends Controller
      */
     public function home()
     {
-        if (\Session::has('wechat_user')) {
-            return true;
+        $user_info = \Session::get('wechat_user');
+        $user_type = config('pcwechat.user_type')[$user_info['state']];
+        if (empty($user_type)) {
+            return abort(404);
         }
-        return false;
+        $response_data = $this->user->myticketType($user_type);
+        return view('myticket.'.$user_type.'.index', compact('response_data'));
     }
 
     /**

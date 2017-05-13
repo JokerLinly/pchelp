@@ -106,8 +106,7 @@ class WeChatSystem
             'wechat_nickname' => $user_info->wechat_nickname,
         ];
         \Session::put('wechat_user', $wechat_user);
-        \Log::info('用户信息保存成功');
-        // 然后存 session
-        return \Session::get('wechat_user');
+        \Session::save();
+        return $wechat_user;
     }
 }
