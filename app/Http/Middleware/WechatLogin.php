@@ -22,7 +22,7 @@ class WechatLogin
                 return Redirect::action('WeChatController@getWechatUserSession');
             }
             $openid = \Cache::get('openid');
-            WeChatSystem::putWechatSession($openid);
+            WeChatSystem::putWechatSessionByOpenid($openid);
         }
         return $next($request);
     }
