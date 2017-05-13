@@ -19,7 +19,8 @@ class WeChatController extends Controller
         $server = EasyWeChat::server();
         $server->setMessageHandler(function ($message) {
             if (!Session::has('wechat_user')) {
-                $user = EasyWeChat::user()->get('od2TLjpXQWy8OnA5Ij4XPW0h5Iig');
+                // $user = EasyWeChat::user()->get('od2TLjpXQWy8OnA5Ij4XPW0h5Iig');
+                $user = EasyWeChat::user()->get($message->FromUserName);
                 WeChatSystem::putWechatSession($user);
             }
             /*判断事件类型*/
