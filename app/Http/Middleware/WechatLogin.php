@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Redirect;
 use WeChatSystem;
 
 class WechatLogin
@@ -17,10 +18,10 @@ class WechatLogin
     public function handle($request, Closure $next)
     {
         if (!$request->session()->has('wechat_user')) {
-            if (!Cache::has('openid')) {
-                dd('迟点再做');
+            if (!\Cache::has('openid')) {
+                return Redirect::action('WeChatController@getWechatUserSession');
             }
-            $openid = Cache::get('openid');
+            $openid = \Cache::get('openid');
             WeChatSystem::putWechatSession($openid);
         }
         return $next($request);

@@ -65,9 +65,9 @@ class WeChatController extends Controller
      * @author JokerLinly 2017-05-09
      * @return [type] [description]
      */
-    public function getWechatUserSession(EasyWeChat\Foundation\Application $app)
+    public function getWechatUserSession(EasyWeChat\Foundation\Application $app, Request $request)
     {
-        $user = $app->oauth->user();
+        $user = $app->oauth->scopes(['snsapi_base'])->user();
         WeChatSystem::putWechatSession($user);
         return redirect($request->header('referer'));
     }
