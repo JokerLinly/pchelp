@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use WeChatSystem;
 
 class WechatLogin
 {
@@ -16,7 +17,11 @@ class WechatLogin
     public function handle($request, Closure $next)
     {
         if (!$request->session()->has('wechat_user')) {
-            return $request->action('WeChatController@getWechatUserSession');
+            if (!Cache::has('openid')) {
+                dd('迟点再做');
+            }
+            $openid = Cache::get('openid');
+            WeChatSystem::putWechatSession($openid);
         }
         return $next($request);
     }

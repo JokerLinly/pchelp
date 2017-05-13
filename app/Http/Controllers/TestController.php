@@ -16,8 +16,7 @@ class TestController extends Controller
     public function index()
     {
         if (!\Session::has('wechat_user')) {
-            $user = EasyWeChat::user()->get('od2TLjpXQWy8OnA5Ij4XPW0h5Iig');
-            $wechat_user = WeChatSystem::putWechatSession($user);
+            $wechat_user = WeChatSystem::putWechatSession('od2TLjpXQWy8OnA5Ij4XPW0h5Iig');
             // \Session::put('wechat_user', $wechat_user);
             // \Session::save();
         }

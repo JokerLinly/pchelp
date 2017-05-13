@@ -95,8 +95,9 @@ class WeChatSystem
      * @param  [type] $user [description]
      * @return [type]       [description]
      */
-    public static function putWechatSession($user)
+    public static function putWechatSessionByOpenid($openid)
     {
+        $user = EasyWeChat::user()->get($openid);
         $user_info = WeChatFactory::getWechatUser($user);
         $wechat_user = [
             'id'              => $user_info->id,

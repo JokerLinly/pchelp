@@ -18,10 +18,8 @@ class WeChatController extends Controller
     {
         $server = EasyWeChat::server();
         $server->setMessageHandler(function ($message) {
-            if (!Session::has('wechat_user')) {
-                // $user = EasyWeChat::user()->get('od2TLjpXQWy8OnA5Ij4XPW0h5Iig');
-                $user = EasyWeChat::user()->get($message->FromUserName);
-                WeChatSystem::putWechatSession($user);
+            if (!Cache::has('openid')) {
+                Cache(['openid' => $message->FromUserName], 1440);
             }
             /*判断事件类型*/
             if ($message->MsgType == 'event') {
