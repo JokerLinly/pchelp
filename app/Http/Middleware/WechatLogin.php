@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Redirect;
 use WeChatSystem;
+use EasyWeChat\Foundation\Application;
 
 class WechatLogin
 {
@@ -18,8 +19,12 @@ class WechatLogin
     public function handle($request, Closure $next)
     {
         if (!$request->session()->has('wechat_user')) {
-            $callback_uri = $request->server('REQUEST_URI');
-            return Redirect::action('WeChatController@getWechatUserSession', ['callback_uri'=> $callback_uri]);
+            \Session::put('callback_uri', $request->server('REQUEST_URI'));
+            \Session::save();
+
+            $app = new Application(config('pcwechat.wechat_callback'));
+            $oauth = $app->oauth;
+            return $oauth->redirect();
         }
         return $next($request);
     }

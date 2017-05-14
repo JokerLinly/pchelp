@@ -18,4 +18,18 @@ return [
         '2' => 'admin',
         '3' => 'super'
     ],
+    /**
+     * 微信回调信息
+     */
+    'wechat_callback' => [
+        'debug'    => true,
+        'app_id'   => env('WECHAT_APPID'),
+        'secret'   => env('WECHAT_SECRET'),
+        'token'    => env('WECHAT_TOKEN'),
+        'aes_key'  => env('WECHAT_AES_KEY'),
+        'oauth'    => [
+            'scopes'   => ['snsapi_base'],
+            'callback' => '/wechat_callback',
+        ],
+    ]
 ];

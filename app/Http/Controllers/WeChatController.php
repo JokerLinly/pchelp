@@ -66,29 +66,10 @@ class WeChatController extends Controller
      */
     public function getWechatUserSession(Request $request)
     {
-        $options = [
-            'debug'  => true,
-            'app_id'  => env('WECHAT_APPID'),
-            'secret'  => env('WECHAT_SECRET'),
-            'token'   => env('WECHAT_TOKEN'),
-            'aes_key' => env('WECHAT_AES_KEY'),
-
-            'oauth' => [
-                'scopes'   => ['snsapi_base'],
-                'callback' => '/wechat_callback',
-            ],
-        ];
-        $app = new Application($options);
+        $app = new Application(config('pcwechat.wechat_callback'));
         $oauth = $app->oauth;
-
-        // 未登录
-        if (empty($_SESSION['wechat_user'])) {
-            \Session::put('callback_uri', $request->callback_uri);
-            \Session::save();
-            return $oauth->redirect();
-        }
-
         $user = $oauth->user();
+
         WeChatSystem::putWechatSessionByOpenid($user->id);
         $callback_uri = \Session::get('callback_uri');
         return redirect($callback_uri);
