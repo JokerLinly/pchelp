@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use EasyWeChat;
+use EasyWeChat\Foundation\Application;
 use Illuminate\Http\Request;
 use WeChatSystem;
 use Session;
@@ -18,9 +19,6 @@ class WeChatController extends Controller
     {
         $server = EasyWeChat::server();
         $server->setMessageHandler(function ($message) {
-            if (!Cache::has('openid')) {
-                Cache(['openid' => $message->FromUserName], 1440);
-            }
             /*判断事件类型*/
             if ($message->MsgType == 'event') {
                 //关注事件
@@ -35,6 +33,7 @@ class WeChatController extends Controller
                     // 按钮是否打开
                     $button_info = WeChatSystem::getButtonInfoByType($type);
                     if ($button_info->type_state == 1) {
+                        // 加个缓存
                         $news = new EasyWeChat\Message\News([
                             'title'       => $button_info->type_name? $button_info->type_name : '预约报修',
                             'description' => $button_info->description? $button_info->description : '预约报修',
@@ -65,10 +64,26 @@ class WeChatController extends Controller
      * @author JokerLinly 2017-05-09
      * @return [type] [description]
      */
-    public function getWechatUserSession(EasyWeChat\Foundation\Application $app, Request $request)
+    public function getWechatUserSession(Request $request)
     {
-        $user = $app->oauth->scopes(['snsapi_base'])->user();
-        WeChatSystem::putWechatSessionByOpenid($user);
-        return redirect($request->header('referer'));
+        $callback_uri = $request->callback_uri;
+        $options = [
+            'debug'  => true,
+            'app_id'  => env('WECHAT_APPID'),
+            'secret'  => env('WECHAT_SECRET'),
+            'token'   => env('WECHAT_TOKEN'),
+            'aes_key' => env('WECHAT_AES_KEY'),
+
+            'oauth' => [
+                'scopes'   => ['snsapi_base'],
+                'callback' => $callback_uri,
+            ],
+        ];
+        $app = new Application($options);
+        $oauth = $app->oauth;
+
+        $user = $oauth->user();
+        WeChatSystem::putWechatSessionByOpenid($user->id);
+        return redirect($callback_uri);
     }
 }

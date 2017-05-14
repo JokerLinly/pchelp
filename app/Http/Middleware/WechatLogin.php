@@ -18,11 +18,8 @@ class WechatLogin
     public function handle($request, Closure $next)
     {
         if (!$request->session()->has('wechat_user')) {
-            if (!\Cache::has('openid')) {
-                return Redirect::action('WeChatController@getWechatUserSession');
-            }
-            $openid = \Cache::get('openid');
-            WeChatSystem::putWechatSessionByOpenid($openid);
+            $callback_uri = $request->server('REQUEST_URI');
+            return Redirect::action('WeChatController@getWechatUserSession', ['callback_uri'=> $callback_uri]);
         }
         return $next($request);
     }
