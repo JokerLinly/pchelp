@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use EasyWeChat\Foundation\Application;
 
-class WechatLogin
+class AdminWechatLogin
 {
     /**
      * Handle an incoming request.
@@ -19,6 +19,12 @@ class WechatLogin
         if (!$request->session()->has('wechat_user')) {
             \Session::put('callback_uri', $request->server('REQUEST_URI'));
             \Session::save();
+
+            $oauth = [
+                'scopes'   => ['snsapi_login'],
+                'callback' => '/admin_wechat_callback',
+            ];
+            \Config::set('pcwechat.wechat_callback.oauth',$oauth);
 
             $app = new Application(config('pcwechat.wechat_callback'));
             $oauth = $app->oauth;

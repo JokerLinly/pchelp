@@ -60,12 +60,34 @@ class WeChatController extends Controller
     }
 
     /**
-     * 网页授权登陆
+     * 公众平台网页授权获取用户信息
      * @author JokerLinly 2017-05-09
      * @return [type] [description]
      */
     public function getWechatUserSession(Request $request)
     {
+        $app = new Application(config('pcwechat.wechat_callback'));
+        $oauth = $app->oauth;
+        $user = $oauth->user();
+
+        WeChatSystem::putWechatSessionByOpenid($user->id);
+        $callback_uri = \Session::get('callback_uri');
+        return redirect($callback_uri);
+    }
+
+    /**
+     * 开放平台网页登录
+     * @author JokerLinly 2017-05-14
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function getAdminUserSession(Request $request)
+    {
+        $oauth = [
+            'scopes'   => ['snsapi_login'],
+            'callback' => '/admin_wechat_callback',
+        ];
+        \Config::set('pcwechat.wechat_callback.oauth',$oauth);
         $app = new Application(config('pcwechat.wechat_callback'));
         $oauth = $app->oauth;
         $user = $oauth->user();
