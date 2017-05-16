@@ -31,9 +31,9 @@ class WeChatController extends Controller
 
                     $type = array_search($message->EventKey, config('pcwechat.event_key'));
                     // 按钮是否打开
+                    // 加个缓存
                     $button_info = WeChatSystem::getButtonInfoByType($type);
                     if ($button_info->type_state == 1) {
-                        // 加个缓存
                         $news = new EasyWeChat\Message\News([
                             'title'       => $button_info->type_name? $button_info->type_name : '预约报修',
                             'description' => $button_info->description? $button_info->description : '预约报修',
@@ -66,28 +66,6 @@ class WeChatController extends Controller
      */
     public function getWechatUserSession(Request $request)
     {
-        $app = new Application(config('pcwechat.wechat_callback'));
-        $oauth = $app->oauth;
-        $user = $oauth->user();
-
-        WeChatSystem::putWechatSessionByOpenid($user->id);
-        $callback_uri = \Session::get('callback_uri');
-        return redirect($callback_uri);
-    }
-
-    /**
-     * 开放平台网页登录
-     * @author JokerLinly 2017-05-14
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function getAdminUserSession(Request $request)
-    {
-        $oauth = [
-            'scopes'   => ['snsapi_login'],
-            'callback' => '/admin_wechat_callback',
-        ];
-        \Config::set('pcwechat.wechat_callback.oauth',$oauth);
         $app = new Application(config('pcwechat.wechat_callback'));
         $oauth = $app->oauth;
         $user = $oauth->user();

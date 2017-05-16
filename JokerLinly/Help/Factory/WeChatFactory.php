@@ -81,4 +81,16 @@ class WeChatFactory
         $user_info = WeChatUser::updateOrCreate($where, $update);
         return $user_info;
     }
+
+    /**
+     * 根据 openID 获取用户信息
+     * @author JokerLinly 2017-05-14
+     * @param  [type] $openid [description]
+     * @return [type]         [description]
+     */
+    public static function getUserByOpenid($openid)
+    {
+        $user_info = WeChatUser::where('openid', $openid)->first();
+        return $user_info;
+    }
 }

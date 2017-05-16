@@ -110,4 +110,37 @@ class WeChatSystem
         \Session::save();
         return $wechat_user;
     }
+
+    /**
+     * admin Session
+     * @author JokerLinly 2017-05-14
+     * @param  [type] $user [description]
+     * @return [type]       [description]
+     */
+    public static function putAdminSession($user)
+    {
+        $user_info = WeChatFactory::getWechatUser($user);
+        $wechat_user = [
+            'id'              => $user_info->id,
+            'state'           => $user_info->state,
+            'openid'          => $user_info->openid,
+            'image_url'       => $user_info->image_url,
+            'wechat_nickname' => $user_info->wechat_nickname,
+        ];
+        \Session::put('wechat_user', $wechat_user);
+        \Session::save();
+        return $wechat_user;
+    }
+
+    /**
+     * 根据 openid 获取用户信息
+     * @author JokerLinly 2017-05-14
+     * @param  [type] $openid [description]
+     * @return [type]         [description]
+     */
+    public static function getUserByOpenid($openid)
+    {
+        $user_info = WeChatFactory::getUserByOpenid($openid);
+        return $user_info;
+    }
 }
